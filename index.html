@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+
+
+<html>
+
+	<head>
+	
+	<link rel="stylesheet" type="text/css" href="main.css">
+
+	<title>CSCI 241 Final (WIP)</title>
+
+	<script> 
+		
+		
+		
+		const Classes = [
+			"Choose a class",
+			"Math",
+			"Science",
+			"CSCI",
+			"Cars or Something",
+			"Advanced Cars or Something",
+			"Thread Hypothesis",
+			"Digit Speculation",
+			"Intro to Web Design"
+		];
+
+		const Enrolled = [
+			0,
+			10,
+			5,
+			3,
+			11,
+			0,
+			1984,
+			6,
+			32,
+		];
+
+		const Capacity = [
+			0,
+			16,
+			16,
+			16,
+			51,
+			1,
+			2023,
+			9,
+			32
+		];
+			
+		function confirmClass(){
+			
+			alert("This doesn't work yet. Have a picture of my spirit animal instead.");
+			document.body.insertAdjacentHTML("beforeend","<img src = \"https://i.redd.it/lsyzebnjr7k61.jpg\" alt = \"Dog With Cans On Head\" style=\"width:calc(100%/3);\">");
+
+		}
+
+		function updateChoice(colText, selectBox){
+			
+			colText.innerHTML = "<h2>".concat(selectBox.target.value, ": ", "</h2>");
+		}
+
+		function loadPage(){
+
+			var classCount = 6;
+
+			
+			
+			for(var j = 1; j <= classCount; j++){
+
+				var r = document.createElement("div")
+				r.classList.add("row");
+
+				var c = document.createElement("div");
+				c.classList.add("column");
+				c.classList.add("centerText");
+
+				for(var i = 0; i < 3; i++){
+
+					
+					var innerCol = document.createElement("div");
+					innerCol.classList.add("innerColumn");
+					
+					if(i == 0){
+						
+						//innerCol.classList.add("preferenceText");
+						innerCol.innerHTML = "<h2 class = \"preferenceText\">Preference #".concat(j.toString(),"</h2>");
+						innerCol.insertAdjacentHTML("beforeend","<p class = \"preferenceText\">(Final implementation may include schedule here)</p>");
+
+					}
+					else if(i == 1){
+						innerCol.innerHTML = "<h2>Class ".concat(j.toString(), "</h2>");
+						innerCol.insertAdjacentHTML("beforeend", "<h4>0/0 students enrolled</h4>");
+
+						var selectDiv = document.createElement("div");
+						//selectDiv.classList.add("centerText");
+						var o = document.createElement("select");
+						o.classList.add("classSelect");
+						selectDiv.appendChild(o);
+	
+						for(var v = 0; v < Classes.length; v++){
+							
+							var choice = document.createElement("option");
+							choice.value = v;
+							choice.name = v;
+							choice.innerHTML = Classes[v];
+	
+							o.appendChild(choice);
+						}
+
+						o.addEventListener("mousedown", function(e){
+							if(e.target.options[e.target.selectedIndex].disabled){
+								document.querySelectorAll("option").forEach(opt => {
+									if(opt.value == this.value){
+										opt.disabled = false;
+									}
+								});
+							}
+						});
+
+						o.addEventListener("change", function(e){
+						
+							var inCol = this.parentElement.parentElement;
+							var ind = e.target.value;
+							var cName = inCol.querySelector("h2");
+							cName.innerHTML = Classes[ind];
+
+							var cTot = inCol.querySelector("h4");
+							cTot.innerHTML = "".concat(Enrolled[ind].toString(),"/",Capacity[ind].toString(), " students enrolled");
+							
+							if(ind != 0){
+
+								document.querySelectorAll("option").forEach(opt => {
+									
+									if(opt.value == ind){
+										opt.disabled = true;
+									}
+								});
+							}
+
+						
+						});
+						innerCol.appendChild(selectDiv);
+					}
+					else{
+
+						innerCol.classList.add("searchCol");
+						
+						innerCol.innerHTML = "<p>Search class list</p>"
+						
+						var inp = document.createElement("input");
+						inp.type = "search";
+						inp.name = "q";
+						inp.style.width = "90%";
+
+						var btn = document.createElement("button");
+						btn.innerHTML = "Search";
+						btn.style.width = "50%";
+
+						innerCol.appendChild(inp);
+						innerCol.appendChild(btn);
+						innerCol.insertAdjacentHTML("beforeend","<p>(Not implemented)</p>");
+					}
+					c.appendChild(innerCol);
+
+				}	
+				r.appendChild(c);
+				document.body.appendChild(r);
+			}
+
+			var buttonDiv = document.createElement("div");
+			buttonDiv.classList.add("confirmButton");
+
+			var button = document.createElement("button");
+			button.onclick = function(){confirmClass()};
+			button.innerHTML = "<h2>Click to confirm classes</h2>";
+
+			buttonDiv.appendChild(button);
+			document.body.appendChild(buttonDiv);
+
+			var footer = document.createElement("div");
+			footer.classList.add("footer");
+			footer.innerHTML = "<p>Made by Autumn Arme, Anthony Bouzek, Aurora Hegarty, and Marta Laska</p>";
+			document.body.appendChild(footer);
+
+		}
+	</script>
+	
+
+	</head>
+
+	<body onload = "loadPage()">
+		
+		<div class = "header">
+			<h1 class = "headerText">Class Registration</h1>
+			<p class = "headerText">At least, an early demo...</p>
+		</div>
+
+		<p style = "height:15px"></p>
+
+
+	</body>
+
+</html>
