@@ -128,7 +128,20 @@
 
 							var cTot = inCol.querySelector("h4");
 							cTot.innerHTML = "".concat(Enrolled[ind].toString(),"/",Capacity[ind].toString(), " students enrolled");
-							
+						
+							fetch('http://localhost:5000/choose', {
+                                                                method: 'POST',
+                                                                body: JSON.stringify({group : Classes[ind]}),
+                                                                headers: { 'Content-type': 'application/json' }
+                                                        })
+                                                        .then(response => response.json())
+                                                        //in the next line, instead of console.log(data), call a function you need
+                                                        //or, if you don't want to do a separate function, you could probably do something like that to store it in a variable and use later:
+                                                        //.then((data) => {
+                                                        //      let major_courses = data;
+                                                        //})
+                                                        .then(data => console.log(data));
+
 							if(ind != 0){
 
 								document.querySelectorAll("option").forEach(opt => {
