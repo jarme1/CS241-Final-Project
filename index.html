@@ -12,17 +12,19 @@
 	<script> 
 		
 		
-		
 		const Classes = [
 			"Choose a class",
+			"Calc 1",
+			"Chem 1",
+			"Intro to CS",
+			
+		]
+		
+		const Depts = [
+			"Choose a department",
 			"Math",
 			"Science",
 			"CSCI",
-			"Cars or Something",
-			"Advanced Cars or Something",
-			"Thread Hypothesis",
-			"Digit Speculation",
-			"Intro to Web Design"
 		];
 
 		const Enrolled = [
@@ -63,9 +65,11 @@
 
 		function loadPage(){
 
-			var classCount = 6;
+			if(location.href == "https://www.cs.oberlin.edu/~jarme/index.html"){
+				location.href = "http://www.cs.oberlin.edu/~jarme/index.html";
+			}
 
-			
+			var classCount = 6;
 			
 			for(var j = 1; j <= classCount; j++){
 
@@ -98,11 +102,15 @@
 						var o = document.createElement("select");
 						o.classList.add("classSelect");
 						selectDiv.appendChild(o);
-	
+						
+						
 						for(var v = 0; v < Classes.length; v++){
 							
 							var choice = document.createElement("option");
-							choice.value = v;
+							if(v == 0)
+								choice.value = -1;
+							else
+								choice.value = v;
 							choice.name = v;
 							choice.innerHTML = Classes[v];
 	
@@ -121,28 +129,21 @@
 
 						o.addEventListener("change", function(e){
 						
+
 							var inCol = this.parentElement.parentElement;
 							var ind = e.target.value;
 							var cName = inCol.querySelector("h2");
-							cName.innerHTML = Classes[ind];
-
+							cName.innerHTML = e.target.options[e.target.selectedIndex].text;
+							
 							var cTot = inCol.querySelector("h4");
-							cTot.innerHTML = "".concat(Enrolled[ind].toString(),"/",Capacity[ind].toString(), " students enrolled");
-						
-							fetch('http://localhost:5000/choose', {
-                                                                method: 'POST',
-                                                                body: JSON.stringify({group : Classes[ind]}),
-                                                                headers: { 'Content-type': 'application/json' }
-                                                        })
-                                                        .then(response => response.json())
-                                                        //in the next line, instead of console.log(data), call a function you need
-                                                        //or, if you don't want to do a separate function, you could probably do something like that to store it in a variable and use later:
-                                                        //.then((data) => {
-                                                        //      let major_courses = data;
-                                                        //})
-                                                        .then(data => console.log(data));
-
-							if(ind != 0){
+							if(ind == -1){
+								cTot.innerHTML = "No class selected";
+							}
+							else{
+								cTot.innerHTML = "".concat(Enrolled[ind].toString(),"/",Capacity[ind].toString(), " students enrolled");
+							}
+							// Disables all classes w/ name, except it's kinda broken atm.
+							/*if(ind != 0){
 
 								document.querySelectorAll("option").forEach(opt => {
 									
@@ -150,7 +151,7 @@
 										opt.disabled = true;
 									}
 								});
-							}
+							}*/
 
 						
 						});
@@ -160,24 +161,79 @@
 
 						innerCol.classList.add("searchCol");
 						
-						innerCol.innerHTML = "<p>Search class list</p>"
+						var searchDiv = document.createElement("div");
+						searchDiv.classList.add("searchCol");
+
+						innerCol.innerHTML = "<p>Search by class type</p>"
 						
-						var inp = document.createElement("input");
-						inp.type = "search";
-						inp.name = "q";
-						inp.style.width = "90%";
+						var o = document.createElement("select");
+						o.classList.add("classSelect");
+						o.style.width = "90%";
+
+						for(var v = 0; v < Depts.length; v++){
+							
+							var choice = document.createElement("option");
+							choice.value = v;
+							choice.name = v;
+							choice.innerHTML = Depts[v];
+	
+							o.appendChild(choice);
+						}
+
+						o.addEventListener("change", function(e){
+										
+							var inRow = this.parentElement.parentElement.parentElement;
+							var ind = e.target.value;
+								
+							
+							var major_courses;
+							
+                                                        fetch("http://clyde.cs.oberlin.edu:5000/choose", {
+                                                                method: "POST",
+                                                                body: JSON.stringify({group : Depts[ind]}),
+                                                                headers: { "Content-type": "application/json" }
+                                                        })
+                                                        .then(response => response.json())
+							.then((data)=>{	
+								major_courses = data["data"]["result"];
+								
+								document.querySelectorAll("select").forEach(sel => {
+									
+									if(sel.parentElement.parentElement.parentElement == inRow && sel != e.target){
+										
+										sel.innerHTML = "<option value = \"-1\">Choose a class</option>";
+
+										for(var i = 0; i < major_courses.length; i++){
+											
+											var opt = document.createElement("option");
+											opt.value = major_courses[i]["crn"];
+											opt.innerHTML = major_courses[i]["class"];
+											
+											sel.appendChild(opt);
+										}
+										
+									}
+									
+								});
+
+							})
+                                                        //.then(data => console.log(data))
+							.catch(error => console.error("Uh oh, error moment"));
+							
+						});
 
 						var btn = document.createElement("button");
 						btn.innerHTML = "Search";
 						btn.style.width = "50%";
 
-						innerCol.appendChild(inp);
-						innerCol.appendChild(btn);
+						searchDiv.appendChild(o);
+						searchDiv.appendChild(btn);
+						innerCol.appendChild(searchDiv);
 						innerCol.insertAdjacentHTML("beforeend","<p>(Not implemented)</p>");
 					}
 					c.appendChild(innerCol);
-
-				}	
+					
+				}
 				r.appendChild(c);
 				document.body.appendChild(r);
 			}
@@ -206,8 +262,15 @@
 	<body onload = "loadPage()">
 		
 		<div class = "header">
-			<h1 class = "headerText">Class Registration</h1>
-			<p class = "headerText">At least, an early demo...</p>
+			<div class = "headerRow">
+				<div class = "hColumn">
+					<h1 class = "headerText">Class Registration</h1>
+					<p class = "headerText">At least, an early demo...</p>
+				</div>
+				<div class = "hColumn">
+					<a class = "headerLinks" href = "https://en.wikipedia.org/wiki/Maize">Go to another page</h1>
+				</div>
+			</div>
 		</div>
 
 		<p style = "height:15px"></p>

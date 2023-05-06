@@ -30,6 +30,28 @@ body{
 	font-family: var(--mainFont);
 }
 
+.headerLinks{
+	margin-right: 10px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	color: lightblue;
+	font-family: var(--mainFont);
+	text-align: right;
+}
+
+.headerRow:after{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.hColumn{
+	display: inline-block;
+	margin: 0 auto;
+	width: 50%;
+	float: left;
+}
+
 .footer{
 		
 	width: 100%;
@@ -110,5 +132,9 @@ body{
 
 }
 
-
+.deptSelect{
+	width: 90%;
+	appearance: none;
+	padding: 5px;
+}
 
