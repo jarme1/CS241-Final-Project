@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+
+<html>
+
+	<link rel="stylesheet" type="text/css" href="main.css">
+	
+	<script>
+		
+		function login(){
+			elm = document.getElementById("login");
+			studentID = elm.value;
+
+			window.location = "http://www.cs.oberlin.edu/~jarme?student=".concat(studentID);
+
+		}
+
+	</script>
+
+	<head>
+		<title>AAAM Registration Page</title>
+	</head>
+
+	<body>
+		
+		<div class = "header">
+			<div class = "headerRow">
+				<div class = "hColumn">
+					<h1 class = "headerText">Class Registration</h1>
+					<p class = "headerText">At least, an early demo...</p>
+				</div>
+				<!--<div class = "hColumn">
+					<a class = "headerLinks" href = "https://en.wikipedia.org/wiki/Maize">Go to another page</h1>
+				</div>-->
+			</div>
+		</div>
+
+		<p style = "height:15px"></p>
+		
+		<div class = "row">
+
+			<div class = "column centerText">
+				
+				<h2>Enter Overland ID</h2>
+				<input type = "number" id = "login" style = "width: 30%; height: 2em;">
+				<p></p>
+				<button onclick = "login()" style = "width: 30%; height: 3em;">Login</button>
+				<p></p>
+
+			</div>
+			<br>
+			<br>
+			<div class = "column centerText">
+				<h3>Information about Overland</h3>
+				<p>
+					Overland is a student-made registration system for a non-existent college. Please don't actually put your Oberlin ID or password into this.
+				</p>
+			</div>
+
+		</div>
+
+		<div class = "footer" style = "position: absolute; bottom: 0;">
+			<p>Made by Autumn Arme, Anthony Bouzek, Aurora Hegarty, and Marta Laska</p>
+		</div>
+	</body>
+
+
+</html>
+

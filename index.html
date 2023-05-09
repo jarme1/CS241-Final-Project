@@ -50,11 +50,61 @@
 			9,
 			32
 		];
-			
+
+		let params = new URLSearchParams(location.search);
+		let studentID = params.get('student');
+		
+		if(studentID == null || studentID == ""){
+			window.location.href = 'login.html';
+		}
+
 		function confirmClass(){
 			
-			alert("This doesn't work yet. Have a picture of my spirit animal instead.");
-			document.body.insertAdjacentHTML("beforeend","<img src = \"https://i.redd.it/lsyzebnjr7k61.jpg\" alt = \"Dog With Cans On Head\" style=\"width:calc(100%/3);\">");
+			//alert("This doesn't work yet. Have a picture of my spirit animal instead.");
+			//document.body.insertAdjacentHTML("beforeend","<img src = \"https://i.redd.it/lsyzebnjr7k61.jpg\" alt = \"Dog With Cans On Head\" style=\"width:calc(100%/3);\">");
+			
+			console.log("STUDENT ID: ");
+			console.log(studentID);
+
+			var ind = 1;
+
+			document.querySelectorAll(".classSelect").forEach(select => {
+				
+				// Gets the "option" element that holds all the data
+				var choice = select[select.selectedIndex];
+				// The innerHTML of choice is the name of the class
+				var className = choice.innerHTML;
+				// The value of choice is the CRN
+				var CRN = choice.value;
+
+				// Log both results
+				console.log(className);
+				console.log(CRN);
+
+				// TODO store this in new preferences
+                                
+				const student = 1;
+
+				fetch("http://clyde.cs.oberlin.edu:3000/select_class", {
+                                	method: "POST",
+                                	body: JSON.stringify({
+						crn: CRN, 
+						id: student, 
+						pref: ind
+					}),
+                                	headers: {"Content-type": "application/json"}
+                                })
+                                .then(response => response.json())
+				.then((data) => { 
+					if (data.added == true) {
+						console.log("added");
+					}
+					else {
+						console.log("error in adding preferences");
+					}
+				})
+				ind++;
+			});
 
 		}
 
@@ -65,8 +115,8 @@
 
 		function loadPage(){
 
-			if(location.href == "https://www.cs.oberlin.edu/~jarme/index.html"){
-				location.href = "http://www.cs.oberlin.edu/~jarme/index.html";
+			if(location.protocol == "https:"){
+				location.protocol = "http:";
 			}
 
 			var classCount = 6;
@@ -79,6 +129,8 @@
 				var c = document.createElement("div");
 				c.classList.add("column");
 				c.classList.add("centerText");
+
+				// I'm going to be real with you, I have no idea why I made this a for loop instead of just adding each thing individually.
 
 				for(var i = 0; i < 3; i++){
 
@@ -118,13 +170,13 @@
 						}
 
 						o.addEventListener("mousedown", function(e){
-							if(e.target.options[e.target.selectedIndex].disabled){
-								document.querySelectorAll("option").forEach(opt => {
+							/*if(e.target.options[e.target.selectedIndex].disabled){
+								document.querySelectorAll(".classSelect").forEach(opt => {
 									if(opt.value == this.value){
 										opt.disabled = false;
 									}
 								});
-							}
+							}*/
 						});
 
 						o.addEventListener("change", function(e){
@@ -167,7 +219,7 @@
 						innerCol.innerHTML = "<p>Search by class type</p>"
 						
 						var o = document.createElement("select");
-						o.classList.add("classSelect");
+						o.classList.add("classSearch");
 						o.style.width = "90%";
 
 						for(var v = 0; v < Depts.length; v++){
@@ -184,11 +236,10 @@
 										
 							var inRow = this.parentElement.parentElement.parentElement;
 							var ind = e.target.value;
-								
 							
 							var major_courses;
 							
-                                                        fetch("http://clyde.cs.oberlin.edu:5000/choose", {
+                                                        fetch("http://clyde.cs.oberlin.edu:3000/choose_major", {
                                                                 method: "POST",
                                                                 body: JSON.stringify({group : Depts[ind]}),
                                                                 headers: { "Content-type": "application/json" }
@@ -197,8 +248,8 @@
 							.then((data)=>{	
 								major_courses = data["data"]["result"];
 								
-								document.querySelectorAll("select").forEach(sel => {
-									
+								document.querySelectorAll(".classSelect").forEach(sel => {
+
 									if(sel.parentElement.parentElement.parentElement == inRow && sel != e.target){
 										
 										sel.innerHTML = "<option value = \"-1\">Choose a class</option>";
@@ -207,11 +258,9 @@
 											
 											var opt = document.createElement("option");
 											opt.value = major_courses[i]["crn"];
-											opt.innerHTML = major_courses[i]["class"];
-											
+											opt.innerHTML = major_courses[i]["class"];						
 											sel.appendChild(opt);
 										}
-										
 									}
 									
 								});
@@ -252,6 +301,10 @@
 			footer.classList.add("footer");
 			footer.innerHTML = "<p>Made by Autumn Arme, Anthony Bouzek, Aurora Hegarty, and Marta Laska</p>";
 			document.body.appendChild(footer);
+			
+			// Add welcome text
+			elm = document.getElementById("welcomeText");
+			elm.innerHTML = "Welcome Student #".concat(studentID);
 
 		}
 	</script>
@@ -268,7 +321,8 @@
 					<p class = "headerText">At least, an early demo...</p>
 				</div>
 				<div class = "hColumn">
-					<a class = "headerLinks" href = "https://en.wikipedia.org/wiki/Maize">Go to another page</h1>
+					<h3 class = "headerText" id = "welcomeText" style = "float: right; text-align: right; margin-right: 10px;"></h3>			
+					<a class = "headerText headerLinks" href = "login.html" style = "float: right; text-align: right;">Log out</a>
 				</div>
 			</div>
 		</div>

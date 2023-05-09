@@ -61,6 +61,7 @@ body{
 	text-align: center;
 	margin-bottom: 0px;
 	padding-bottom: 1px;
+	
 
 }
 
@@ -130,6 +131,14 @@ body{
 	appearance: none;
 	padding: 5px;
 
+}
+
+.classSearch{
+	
+	width: 50%;
+	appearance: none;
+	padding: 5px;
+	
 }
 
 .deptSelect{
