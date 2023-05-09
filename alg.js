@@ -70,6 +70,7 @@ function makeSchedule(student) {
     schedule[0] = compat[0]
     for (i; i < compats.length; i++) {
         schedule[x] = compats[i];
+        //Increment the num_filled for each class based on the key in schedule[x]
         x++;
     }
     //put the schedule in the database
