@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+
+
+
+
+
+<html>
+	
+	<link rel="stylesheet" type="text/css" href="main.css">
+	
+	<script>
+		
+		function runAlg(){
+			
+			var elm = document.getElementById("login");
+			var pass = elm.value;
+
+			if(pass == "1235"){
+				elm.parentElement.innerHTML = "<h2>The algorithm has been run.</h2>";
+				
+				var scr = document.createElement("script");
+				scr.setAttribute("src", "algorithm.js");
+				document.body.appendChild(scr);
+
+			}
+
+		}
+
+	</script>
+
+	<head>
+		<title>ADMIN PAGE</title>
+	</head>
+		
+	<body>
+		
+		<div class = "header">
+			<div class = "headerRow">
+				<div class = "hColumn">
+					<h1 class = "headerText">Class Registration</h1>
+					<p class = "headerText">At least, an early demo...</p>
+				</div>
+				<!--<div class = "hColumn">
+					<a class = "headerLinks" href = "https://en.wikipedia.org/wiki/Maize">Go to another page</h1>
+				</div>-->
+			</div>
+		</div>
+
+		<p style = "height:15px"></p>
+		
+		<div class = "row">
+
+			<div class = "column centerText">
+				
+				<h2>Enter Password</h2>
+				<h4>to run the algorithm</h4>
+				<input type = "number" id = "login" style = "width: 30%; height: 2em;">
+				<p></p>
+				<button onclick = "runAlg()" style = "width: 30%; height: 3em;">RUN</button>
+				<p></p>
+
+			</div>
+			<br>
+			<br>
+			<div class = "column centerText">
+				<h3>Please don't press this!</h3>
+				<p>If you somehow found this, congrats! Please don't press this unless you're an administrator. We have no security here.</p>
+			</div>
+
+		</div>
+
+		<div class = "footer" style = "position: absolute; bottom: 0;">
+			<p>Made by Autumn Arme, Anthony Bouzek, Aurora Hegarty, and Marta Laska</p>
+		</div>
+
+	</body>
+
+
+</html>

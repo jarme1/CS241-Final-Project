@@ -20,56 +20,46 @@
 			
 		]
 		
-		var Depts = [];
-
-		/*await fetch("http://clyde.cs.oberlin.edu:3000/departments")
+                fetch("http://clyde.cs.oberlin.edu:3000/departments")
                 .then(response => response.json())
-		.then((data) => {//console.log(data.dept["result"]));
-			const db_result = data.dept["result"];
-			console.log(db_result.length);
+		.then((data) => {
 			const Depts = [];
-			for (let i = 0; i < db_result.length; i++) {
-				Depts[i] = db_result[i]["Department"];
+			for (let i = 0; i < data.dept["result"].length; i++) {
+				Depts[i] = data.dept["result"][i]["Department"];
 			}	
 			console.log(Depts);
-		})
-		.catch(err => console.log("Error getting departments"));
-		*/
+		});
 		
-			//const Depts = [
+		//const Depts = [
 		//	"Choose a department",
 		//	"Math",
 		//	"Science",
 		//	"CSCI",
 		//];
 
-		var Enrolled = [];
+		const Enrolled = [
+			0,
+			10,
+			5,
+			3,
+			11,
+			0,
+			1984,
+			6,
+			32,
+		];
 
-		//const Enrolled = [
-		//	0,
-		//	10,
-		//	5,
-		//	3,
-		//	11,
-		//	0,
-		//	1984,
-		//	6,
-		//	32,
-		//];
-
-		var Capacity = [];
-
-		//const Capacity = [
-		//	0,
-		//	16,
-		//	16,
-		//	16,
-		//	51,
-		//	1,
-		//	2023,
-		//	9,
-		//	32
-		//];
+		const Capacity = [
+			0,
+			16,
+			16,
+			16,
+			51,
+			1,
+			2023,
+			9,
+			32
+		];
 
 		let params = new URLSearchParams(location.search);
 		let studentID = params.get('student');
@@ -133,47 +123,11 @@
 			colText.innerHTML = "<h2>".concat(selectBox.target.value, ": ", "</h2>");
 		}
 
-		async function loadPage(){
+		function loadPage(){
 
-			await fetch("http://clyde.cs.oberlin.edu:3000/departments")
-                	.then(response => response.json())
-			.then((data) => {
-				const db_result = data.dept["result"];
-				for (let i = 0; i < db_result.length; i++) {
-					Depts[i] = db_result[i]["Department"];
-				}	
-				console.log(Depts);
-			})
-			.catch(err => console.log("Error getting departments"));
-
-
-                        await fetch("http://clyde.cs.oberlin.edu:3000/capacity")
-                        .then(response => response.json())
-                        .then((data) => {
-                                const db_result = data.cap["result"];
-                                for (let i = 0; i < db_result.length; i++) {
-                                        Capacity[i] = db_result[i]["Capacity"];
-                                }
-                                console.log(Capacity);
-                        })
-                        .catch(err => console.log("Error getting capacity"));
-
-
-                        await fetch("http://clyde.cs.oberlin.edu:3000/enrolled")
-                        .then(response => response.json())
-                        .then((data) => {
-                                const db_result = data.enrl["result"];
-                                for (let i = 0; i < db_result.length; i++) {
-                                        Enrolled[i] = db_result[i]["Num_Filled"];
-                                }
-                                console.log(Enrolled);
-                        })
-                        .catch(err => console.log("Error getting number enrolled"));
-
-                        if(location.protocol == "https:"){
-                                location.protocol = "http:";
-                        }
-
+			if(location.protocol == "https:"){
+				location.protocol = "http:";
+			}
 
 			var classCount = 6;
 			
@@ -212,13 +166,18 @@
 						selectDiv.appendChild(o);
 						
 						
-						
+						for(var v = 0; v < Classes.length; v++){
 							
-						var choice = document.createElement("option");
-						choice.name = ""
-						choice.innerHTML = "Pick a department";
+							var choice = document.createElement("option");
+							if(v == 0)
+								choice.value = -1;
+							else
+								choice.value = v;
+							choice.name = v;
+							choice.innerHTML = Classes[v];
 	
-						o.appendChild(choice);
+							o.appendChild(choice);
+						}
 
 						o.addEventListener("mousedown", function(e){
 							/*if(e.target.options[e.target.selectedIndex].disabled){
@@ -308,8 +267,8 @@
 										for(var i = 0; i < major_courses.length; i++){
 											
 											var opt = document.createElement("option");
-											opt.value = major_courses[i]["Id"];
-											opt.innerHTML = major_courses[i]["Class_Name"];						
+											opt.value = major_courses[i]["crn"];
+											opt.innerHTML = major_courses[i]["class"];						
 											sel.appendChild(opt);
 										}
 									}
@@ -358,7 +317,6 @@
 			elm.innerHTML = "Welcome Student #".concat(studentID);
 
 		}
-		
 	</script>
 	
 

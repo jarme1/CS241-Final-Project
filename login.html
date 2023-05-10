@@ -11,7 +11,23 @@
 			elm = document.getElementById("login");
 			studentID = elm.value;
 
-			window.location = "http://www.cs.oberlin.edu/~jarme?student=".concat(studentID);
+                        fetch("http://clyde.cs.oberlin.edu:3000/login", {
+        	                method: "POST",
+                                body: JSON.stringify({id: studentID }),
+                               	headers: {"Content-type": "application/json"}
+                        })
+                        .then(response => response.json())
+                        .then((data) => {
+                        	if (data.login == true) {
+					window.location = "http://www.cs.oberlin.edu/~jarme?student=".concat(studentID);
+                                	//console.log("Login success");
+                                }
+                               	else {
+                                        console.log("Nonexistent ID");
+                                }
+                       	})
+
+			//window.location = "http://www.cs.oberlin.edu/~jarme?student=".concat(studentID);
 
 		}
 
