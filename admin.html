@@ -9,22 +9,27 @@
 	<link rel="stylesheet" type="text/css" href="main.css">
 	
 	<script>
-		
-		function runAlg(){
-			
-			var elm = document.getElementById("login");
-			var pass = elm.value;
 
-			if(pass == "1235"){
-				elm.parentElement.innerHTML = "<h2>The algorithm has been run.</h2>";
-				
-				var scr = document.createElement("script");
-				scr.setAttribute("src", "algorithm.js");
-				document.body.appendChild(scr);
 
-			}
+                if(location.protocol == "https:"){
+                        location.protocol = "http:";
+                }
 
-		}
+                function runAlg(){
+
+                        var elm = document.getElementById("login");
+                        var pass = elm.value;
+
+                        if(pass == "1235"){
+                                elm.parentElement.innerHTML = "<h2>The algorithm has been run.</h2>";
+
+                                var scr = document.createElement("script");
+                                scr.setAttribute("src", "alg.js");
+                                document.body.appendChild(scr);
+
+                        }
+
+                }
 
 	</script>
 
